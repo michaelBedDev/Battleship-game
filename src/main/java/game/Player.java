@@ -8,6 +8,28 @@ public class Player {
 	private int[][] boardStatus = new int[10][10]; // 1 for water, 2 for ships, 0 default(not seen yet)
 	private int shipsSinked; // +number of cells discovered
 
+	
+	
+	public int getShipsSinked() {
+		return shipsSinked;
+	}
+
+
+
+	public void setShipsSinked(int shipsSinked) {
+		this.shipsSinked = shipsSinked;
+	}
+
+
+
+	public Player() {
+		createBoardStatus();
+		placeShips();
+		shipsSinked = 0;
+	}
+
+	
+
 	// createBoard
 	public void createBoardStatus() {
 		for (int i = 0; i < this.getBoardStatus().length; i++) {
@@ -19,42 +41,10 @@ public class Player {
 
 	public void placeShips() {
 		placeShip(5);
-		showBoats();
 		placeShip(4);
-		showBoats();
 		placeShip(3);
-		showBoats();
 		placeShip(3);
-		showBoats();
 		placeShip(2);
-	}
-
-	// mostrar tablero
-	public void showStatus() {
-		for (int[] row : this.boardStatus) {
-			for (int i : row) {
-				switch (i) {
-				case 0 -> System.out.print("🔷");
-				case 1 -> System.out.print("⬛"); // agua
-				case 2 -> System.out.print("🔲"); // barco
-				}
-			}
-			System.out.println();
-		}
-	}
-
-	public void showBoats() {
-		for (int[] row : this.board) {
-			for (int i : row) {
-				switch (i) {
-				case 0 -> System.out.print("🔷");
-				case -1 -> System.out.print("⬛"); // agua
-				case 1 -> System.out.print("🔲"); // barco
-				}
-			}
-			System.out.println();
-		}
-		System.out.println();
 	}
 
 	// posicionarBarcos
