@@ -1,15 +1,15 @@
 package game;
 
-import java.util.Iterator;
 import java.util.Scanner;
 
 public class Battleship {
 
+	Player player1;
+	Player cpu;
 
 	public static void main(String[] args) {
 		Battleship battleship = new Battleship();
 		battleship.play();
-
 	}
 
 	//Añadir al descubrirse el barco que enseñe el agua a su alrededor
@@ -20,22 +20,16 @@ public class Battleship {
 	//arreglar input letras arreglar con A10 arreglar con string de un caracter
 	
 	
-	
-	
-	
 	public void play() {
 		Player p1 = new Player();
 		Player cpu = new Player();
-		//showPlayerBoats(p1);
 		showBothBoards(p1.getBoard(), cpu.getBoard());
 		showBothStatusBoards(p1.getBoardStatus(), cpu.getBoardStatus());
 		
 		do {
-			
 			playerTurn(p1, cpu);
 			cpuTurn(p1, cpu);
-			
-		} while (p1.getShipsSinked() < 17 || cpu.getShipsSinked() < 17);
+		} while (p1.getShipsSinked() < 5 || cpu.getShipsSinked() < 5);
 	}
 
 	public void playerTurn(Player p1, Player cpu) {
@@ -46,17 +40,14 @@ public class Battleship {
 		int y = coordinates[0]; 
 		int x = coordinates[1];
 		
-		if (cpu.getBoard()[y][x] == 1) {     //if ship 
-			p1.setShipsSinked(p1.getShipsSinked()+1);
-			cpu.getBoardStatus()[y][x] = 2; //set board to ship
-			
-			
-			
+		if (cpu.getBoard().getTablero()[y][x] == 1) {     //if ship 
+			cpu.getBoardStatus().setCell(y, x, 2); ; //set board to ship
+	
 			showBothStatusBoards(p1.getBoardStatus(), cpu.getBoardStatus());
-			
 			playerTurn(p1, cpu);
+			
 		} else {
-			cpu.getBoardStatus()[y][x] = 1;   // set to water
+			cpu.getBoardStatus().setCell(y, x, 1);
 			showBothStatusBoards(p1.getBoardStatus(), cpu.getBoardStatus());
 		}
 	}
@@ -70,7 +61,7 @@ public class Battleship {
 	
 	// mostrar tablero
 	public void showStatus(Player p) {
-		for (int[] row : p.getBoardStatus()) {
+		for (int[] row : p.getBoardStatus().getTablero()) {
 			for (int i : row) {
 				switch (i) {
 				case 0 -> System.out.print("🔷");
@@ -85,7 +76,7 @@ public class Battleship {
 
 	// mostrar Barcos
 	public void showBoats(Player p) {
-		for (int[] row : p.getBoard()) {
+		for (int[] row : p.getBoard().getTablero()) {
 			for (int i : row) {
 				switch (i) {
 				case 0 -> System.out.print("🔷");
@@ -104,7 +95,7 @@ public class Battleship {
 	}
 
 	// mostrar ambos tableros SAME SIZE!!
-	public void showBothStatusBoards(int[][] board1, int[][] board2) {
+	public void showBothStatusBoards(BoardStatus boardStatus, BoardStatus boardStatus2) {
 
 		char letter = 'A'; //print letter
 		int number = 1;
@@ -113,7 +104,7 @@ public class Battleship {
 		
 		for (int i = 0; i < 2; i++) {
 			System.out.print(" ".repeat(2));
-			for (int j = 0; j < board2.length; j++) {
+			for (int j = 0; j < boardStatus2.getTablero().length; j++) {
 				System.out.print(number + " ");
 				number++;
 			}
@@ -123,12 +114,12 @@ public class Battleship {
 		System.out.println();
 		
 		
-		for (int posY = 0; posY < board1.length; posY++) {
+		for (int posY = 0; posY < boardStatus.getTablero().length; posY++) {
 
 			System.out.print(letter + "-");
 			// Board 1
-			for (int x1 = 0; x1 < board1[posY].length; x1++) {
-				switch (board1[posY][x1]) {
+			for (int x1 = 0; x1 < boardStatus.getTablero()[posY].length; x1++) {
+				switch (boardStatus.getTablero()[posY][x1]) {
 				case 0 -> System.out.print("🔷");
 				case 1 -> System.out.print("⬛"); // agua
 				case 2 -> System.out.print("🔲"); // barco
@@ -139,8 +130,8 @@ public class Battleship {
 			System.out.print("\t\t" + letter + "-"); // Spacing
 
 			// Board 2
-			for (int x2 = 0; x2 < board2[posY].length; x2++) {
-				switch (board2[posY][x2]) {
+			for (int x2 = 0; x2 < boardStatus2.getTablero()[posY].length; x2++) {
+				switch (boardStatus2.getTablero()[posY][x2]) {
 				case 0 -> System.out.print("🔷");
 				case 1 -> System.out.print("⬛"); // agua
 				case 2 -> System.out.print("🔲"); // barco
@@ -150,10 +141,12 @@ public class Battleship {
 			System.out.println();
 		}
 		System.out.println();
+	
 	}
 	
+	
 	// mostrar ambos tableros de barcos SAME SIZE!!
-		public void showBothBoards(int[][] board1, int[][] board2) {
+		public void showBothBoards(Board board, Board board2) {
 
 			char letter = 'A'; //print letter
 			int number = 1;
@@ -162,7 +155,7 @@ public class Battleship {
 			
 			for (int i = 0; i < 2; i++) {
 				System.out.print(" ".repeat(2));
-				for (int j = 0; j < board2.length; j++) {
+				for (int j = 0; j < board2.getTablero().length; j++) {
 					System.out.print(number + " ");
 					number++;
 				}
@@ -173,13 +166,13 @@ public class Battleship {
 			
 			
 			
-			for (int posY = 0; posY < board1.length; posY++) {
+			for (int posY = 0; posY < board.getTablero().length; posY++) {
 
 				System.out.print(letter + "-");
 				// Board 1
-				for (int x1 = 0; x1 < board1[posY].length; x1++) {
+				for (int x1 = 0; x1 < board.getTablero()[posY].length; x1++) {
 
-					switch (board1[posY][x1]) {
+					switch (board.getCell(posY, x1)) {
 					case 0 -> System.out.print("🔷");
 					case -1 -> System.out.print("⬛"); 
 					case 1 -> System.out.print("🔲"); 
@@ -190,8 +183,8 @@ public class Battleship {
 				System.out.print("\t\t" + letter + "-"); // Spacing
 
 				// Board 2
-				for (int x2 = 0; x2 < board2[posY].length; x2++) {
-					switch (board2[posY][x2]) {
+				for (int x2 = 0; x2 < board2.getTablero()[posY].length; x2++) {
+					switch (board2.getCell(posY, x2)) {
 					case 0 -> System.out.print("🔷");
 					case -1 -> System.out.print("⬛"); 
 					case 1 -> System.out.print("🔲"); 
