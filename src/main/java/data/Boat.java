@@ -7,13 +7,21 @@ public class Boat {
 	private int size;
 	private boolean axis;
 	
-
-	
-	
-
+	//
 	public Boat(int size) {
 		this.size = size;
 	}
+	
+
+	public Boat(int coordX, int coordY, int size, boolean axis) {
+		super();
+		this.coordX = coordX;
+		this.coordY = coordY;
+		this.size = size;
+		this.axis = axis;
+	}
+
+
 	public int getCoordX() {
 		return coordX;
 	}
@@ -32,12 +40,15 @@ public class Boat {
 	public void setSize(int size) {
 		this.size = size;
 	}
+
 	public boolean isAxis() {
 		return axis;
 	}
+
 	public void setAxis(boolean axis) {
 		this.axis = axis;
 	}
+
 }
 
 
