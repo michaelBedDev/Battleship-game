@@ -1,4 +1,4 @@
-package game;
+package data;
 
 public class Player {
 
@@ -15,6 +15,8 @@ public class Player {
 		this.boardStatus = new BoardStatus();
 		board.placeShips(ships);
 	}
+	
+	
 
 	
 
