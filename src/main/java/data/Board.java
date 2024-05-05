@@ -4,13 +4,14 @@ import java.security.SecureRandom;
 
 public class Board {
 
-	private int[][] tablero;
-	private static SecureRandom rand = new SecureRandom();
+	protected int[][] tablero;
+	protected static SecureRandom rand = new SecureRandom();
 
 	public Board() {
 		this.tablero = new int[10][10];
 	}
 
+	
 	/**
 	 * Place all the ships into board
 	 * 
@@ -160,7 +161,7 @@ public class Board {
 					} else if ((ship.getCoordY() + i) < 0 || (ship.getCoordY() + i > 9)) { /* is in limit Y */
 						continue;
 					} else {
-						this.tablero[ship.getCoordY() + i][ship.getCoordX() + j] = -1; /* update the cell to -1 */
+						this.tablero[ship.getCoordY() + i][ship.getCoordX() + j] = 1; /* update the cell to 1 */
 					}
 				}
 			}
@@ -173,7 +174,7 @@ public class Board {
 					} else if ((ship.getCoordY() + i) < 0 || (ship.getCoordY() + i > 9)) {
 						continue;
 					} else {
-						this.tablero[ship.getCoordY() + i][ship.getCoordX() + j] = -1;
+						this.tablero[ship.getCoordY() + i][ship.getCoordX() + j] = 1;
 					}
 				}
 			}
@@ -188,15 +189,16 @@ public class Board {
 	private void updateBoatPlace(Boat ship) {
 		if (ship.isAxis()) {
 			for (int j = 0; j < ship.getSize(); j++) {
-				this.tablero[ship.getCoordY()][ship.getCoordX() + j] = 1;
+				this.tablero[ship.getCoordY()][ship.getCoordX() + j] = 2;
 			}
 
 		} else {
 			for (int i = 0; i < ship.getSize(); i++) {
-				this.tablero[ship.getCoordY() + i][ship.getCoordX()] = 1;
+				this.tablero[ship.getCoordY() + i][ship.getCoordX()] = 2;
 			}
 		}
 	}
+	
 
 	// Getters & Setters
 	public int[][] getTablero() {
@@ -206,11 +208,25 @@ public class Board {
 	public void setTablero(int[][] tablero) {
 		this.tablero = tablero;
 	}
-
+	
+	/**
+	 * Set the value of the specified cell with y,x
+	 * 
+	 * @param y
+	 * @param x
+	 * @param value
+	 */
 	public void setCell(int y, int x, int value) {
 		this.tablero[y][x] = value;
 	}
 
+	/**
+	 * Get the cell value from y,x
+	 * 
+	 * @param y
+	 * @param x
+	 * @return
+	 */
 	public int getCell(int y, int x) {
 		return tablero[y][x];
 	}

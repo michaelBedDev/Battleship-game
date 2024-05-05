@@ -2,61 +2,58 @@ package view;
 
 import java.util.Scanner;
 
-import data.Player;
+import data.Board;
 
 public class UI {
-	
+
 	private Scanner sc;
-	
+
+	/**
+	 * Constructor
+	 */
 	public UI() {
 		super();
 		sc = new Scanner(System.in);
 	}
 
-	
-	public int[] askCoordinates() { // need test ARREGLAR
+	/**
+	 * Ask the user for a letter and a number. Keep asking them if incorrect format.
+	 * Then transform them into a array of two digits. Coordinates Y and X
+	 * 
+	 * @return an array of two Integers (coordinates y,x)
+	 */
+	public int[] askCoordinates() { /* need test ARREGLAR */
 		String input;
-		boolean isValid = false;
 		int letter;
 		int number;
 
+		boolean validLetter;
+
 		do {
-			boolean validateFormat;
-			boolean validateLength;
-			do {
-				do {
-					System.out.println("Introduce las coordenadas [A1:J10]");
-					input = sc.nextLine();
-				} while (input.equals(""));
+			input = validateCoordinatesFormat();
 
-				validateFormat = Character.isAlphabetic(input.charAt(0)) && Character.isDigit(input.charAt(1));
-				validateLength = (input.length() == 2);
-
-			} while (!validateLength && !validateFormat);
-
-			letter = input.toUpperCase().charAt(0) - 'A'; // A in ASCII = 65 so (65-65 A would be 0)
+			letter = input.toUpperCase().charAt(0) - 'A'; /* A in ASCII = 65 so (65-65 A would be 0) */
 			number = Integer.parseInt(input.substring(1)) - 1;
 
-			boolean validLetter = letter > -1 && letter < 10;
+			validLetter = letter > -1 && letter < 10;
 
-			isValid = validateFormat && validateLength && validLetter;
-
-			if (!isValid) {
-				System.out.println("Por favor, introduce nuevamente las coordenadas");
+			if (!validLetter) {
+				System.out.println("La letra no es correcta. Introduce nuevamente las coordenadas");
 			}
-		} while (!isValid || input.equals(""));
-
+		} while (!validLetter);
 		return new int[] { letter, number };
 	}
 
-	// mostrar tablero
-	public void showStatusBoard(Player p) {
-		for (int[] row : p.getBoardStatus().getTablero()) {
+	/**
+	 * Show the board itself
+	 */
+	public void show(Board board) {
+		for (int[] row : board.getTablero()) {
 			for (int i : row) {
 				switch (i) {
 				case 0 -> System.out.print("🔷");
-				case 1 -> System.out.print("⬛"); // agua
-				case 2 -> System.out.print("🔲"); // barco
+				case 1 -> System.out.print("⬛");
+				case 2 -> System.out.print("🔲");
 				}
 			}
 			System.out.println();
@@ -64,31 +61,24 @@ public class UI {
 		System.out.println();
 	}
 
-	// mostrar ambos tableros SAME SIZE!!
-	public void showBothStatusBoards(Player p1, Player p2) {
+	/**
+	 * Show both boards with header and legend. Works for board and StatusBoard
+	 * 
+	 * @param board1
+	 * @param board2
+	 */
+	public void showBothBoards(Board board1, Board board2) {
 
-		char letter = 'A'; // print letter
-		int number = 1;
+		printHeader();
 
-		System.out.printf("%16s\t\t%15s\n", "*TUS BARCOS*", "*EL RIVAL*");
+		char letter = 'A';
 
-		for (int i = 0; i < 2; i++) {
-			System.out.print(" ".repeat(2));
-			for (int j = 0; j < p2.getBoardStatus().getTablero().length; j++) {
-				System.out.print(number + " ");
-				number++;
-			}
-			number = 1;
-			System.out.print(" ".repeat(9));
-		}
-		System.out.println();
-
-		for (int posY = 0; posY < p1.getBoardStatus().getTablero().length; posY++) {
+		for (int posY = 0; posY < board1.getTablero().length; posY++) {
 
 			System.out.print(letter + "-");
-			// Board 1
-			for (int x1 = 0; x1 < p1.getBoardStatus().getTablero()[posY].length; x1++) {
-				switch (p1.getBoardStatus().getTablero()[posY][x1]) {
+			/* Board 1 */
+			for (int x1 = 0; x1 < board1.getTablero()[posY].length; x1++) {
+				switch (board1.getTablero()[posY][x1]) {
 				case 0 -> System.out.print("🔷");
 				case 1 -> System.out.print("⬛"); // agua
 				case 2 -> System.out.print("🔲"); // barco
@@ -98,9 +88,9 @@ public class UI {
 
 			System.out.print("\t\t" + letter + "-"); // Spacing
 
-			// Board 2
-			for (int x2 = 0; x2 < p2.getBoardStatus().getTablero()[posY].length; x2++) {
-				switch (p2.getBoardStatus().getTablero()[posY][x2]) {
+			/*Board 2 */
+			for (int x2 = 0; x2 < board2.getTablero()[posY].length; x2++) {
+				switch (board2.getTablero()[posY][x2]) {
 				case 0 -> System.out.print("🔷");
 				case 1 -> System.out.print("⬛"); // agua
 				case 2 -> System.out.print("🔲"); // barco
@@ -112,17 +102,16 @@ public class UI {
 		System.out.println();
 	}
 
-	// mostrar ambos tableros de barcos SAME SIZE!!
-	public void showBothBoards(Player p1, Player p2) {
-
-		char letter = 'A'; // print letter
-		int number = 1;
-
+	/**
+	 * Print the header after print the board. Message and numbers
+	 */
+	private void printHeader() {
 		System.out.printf("%16s\t\t%15s\n", "*TUS BARCOS*", "*EL RIVAL*");
+		int number = 1;
 
 		for (int i = 0; i < 2; i++) {
 			System.out.print(" ".repeat(2));
-			for (int j = 0; j < p2.getBoard().getTablero().length; j++) {
+			for (int j = 0; j < 10; j++) {
 				System.out.print(number + " ");
 				number++;
 			}
@@ -130,38 +119,53 @@ public class UI {
 			System.out.print(" ".repeat(9));
 		}
 		System.out.println();
-
-		for (int posY = 0; posY < p1.getBoard().getTablero().length; posY++) {
-
-			System.out.print(letter + "-");
-			// Board 1
-			for (int x1 = 0; x1 < p1.getBoard().getTablero()[posY].length; x1++) {
-
-				switch (p1.getBoard().getCell(posY, x1)) {
-				case 0 -> System.out.print("🔷");
-				case -1 -> System.out.print("⬛");
-				case 1 -> System.out.print("🔲");
-				}
-
-			}
-
-			System.out.print("\t\t" + letter + "-"); // Spacing
-
-			// Board 2
-			for (int x2 = 0; x2 < p2.getBoard().getTablero()[posY].length; x2++) {
-				switch (p2.getBoard().getCell(posY, x2)) {
-				case 0 -> System.out.print("🔷");
-				case -1 -> System.out.print("⬛");
-				case 1 -> System.out.print("🔲");
-				}
-			}
-			letter++;
-			System.out.println();
-		}
-		System.out.println();
 	}
 
+	/**
+	 * Method to show a message to user
+	 * 
+	 * @param message (message to show)
+	 */
 	public void showMessage(String message) {
 		System.out.println(message);
+	}
+
+	/**
+	 * Ask user for a String
+	 * 
+	 * @param message (to print)
+	 * @return input. loop if string is empty
+	 */
+	private String askString(String message) {
+
+		String input;
+		do {
+			System.out.println(message);
+			input = sc.nextLine();
+		} while (input.equals(""));
+
+		return input;
+	}
+
+	/**
+	 * Validate the format asked for coordinates is Letter, number
+	 * 
+	 * @return input
+	 */
+	private String validateCoordinatesFormat() {
+
+		boolean validateFormat;
+		boolean validateLength;
+		String input;
+
+		do {
+			input = askString("Introduce las coordenadas [A1:J10]");
+
+			validateFormat = Character.isAlphabetic(input.charAt(0)) && Character.isDigit(input.charAt(1));
+			validateLength = (input.length() == 2);
+
+		} while (!validateLength && !validateFormat);
+
+		return input;
 	}
 }
