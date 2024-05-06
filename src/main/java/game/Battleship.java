@@ -46,7 +46,7 @@ public class Battleship {
 
 		if (cpu.getBoard().getTablero()[y][x] == 2) { // if ship
 			cpu.getBoardStatus().setCell(y, x, 2); // set boardSt to ship
-			view.showMessage("!Barco!");
+			view.showMessage("¡Barco!");
 			player1.setShipsSinked(player1.getShipsSinked()+1);
 
 			view.showBothBoards(p1.getBoardStatus(), cpu.getBoardStatus());
