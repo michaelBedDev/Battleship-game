@@ -18,6 +18,7 @@ public class Battleship {
 	// Añadir al descubrirse el barco que enseñe el agua a su alrededor
 	// Añadir cambiar length F55
 	// Añadir que si la casilla ya está descubierta, volver a tirar
+	//añadir que es tu turno o del rival
 	// Revisar bug de terminado o no
 	//añadir traducir coordenadas de la cpu
 
