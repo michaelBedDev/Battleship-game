@@ -230,4 +230,20 @@ public class Board {
 	public int getCell(int y, int x) {
 		return tablero[y][x];
 	}
+	
+	
+	public int[] generateCoordinates() {
+		int y = rand.nextInt(10);
+		int x = rand.nextInt(10);
+		
+		return new int[] {y,x};
+	}
+	
+	public int[] generateCoordinatesAround(int y, int x) {
+		
+		y = rand.nextInt(y-1, y+2);
+		x = rand.nextInt(x-1, x+2);
+		
+		return new int[] {y,x};
+	}
 }

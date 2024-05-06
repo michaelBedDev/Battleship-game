@@ -33,7 +33,7 @@ public class UI {
 			input = validateCoordinatesFormat();
 
 			letter = input.toUpperCase().charAt(0) - 'A'; /* A in ASCII = 65 so (65-65 A would be 0) */
-			number = Integer.parseInt(input.substring(1)) - 1;
+			number = Character.getNumericValue(input.charAt(1));
 
 			validLetter = letter > -1 && letter < 10;
 
@@ -107,7 +107,7 @@ public class UI {
 	 */
 	private void printHeader() {
 		System.out.printf("%16s\t\t%15s\n", "*TUS BARCOS*", "*EL RIVAL*");
-		int number = 1;
+		int number = 0;
 
 		for (int i = 0; i < 2; i++) {
 			System.out.print(" ".repeat(2));
@@ -115,7 +115,7 @@ public class UI {
 				System.out.print(number + " ");
 				number++;
 			}
-			number = 1;
+			number = 0;
 			System.out.print(" ".repeat(9));
 		}
 		System.out.println();
@@ -159,7 +159,7 @@ public class UI {
 		String input;
 
 		do {
-			input = askString("Introduce las coordenadas [A1:J10]");
+			input = askString("Introduce las coordenadas [A0:J9]");
 
 			validateFormat = Character.isAlphabetic(input.charAt(0)) && Character.isDigit(input.charAt(1));
 			validateLength = (input.length() == 2);
